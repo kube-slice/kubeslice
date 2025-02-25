@@ -106,7 +106,7 @@ jobs:
           
       - name: Run cert-manager chart-releaser
         if: ${{ github.event.inputs.cert-manager == 'Yes' }}
-        uses: helm/chart-releaser-action@v1.4.1
+        uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: charts/
         env:
@@ -114,7 +114,7 @@ jobs:
           
       - name: Run istio-base chart-releaser
         if: ${{ github.event.inputs.istio-base == 'Yes' }}
-        uses: helm/chart-releaser-action@v1.4.1
+        uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: charts/
         env:
@@ -122,7 +122,7 @@ jobs:
           
       - name: Run istio-discovery chart-releaser
         if: ${{ github.event.inputs.istio-discovery == 'Yes' }}
-        uses: helm/chart-releaser-action@v1.4.1
+        uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: charts/
         env:
@@ -130,15 +130,16 @@ jobs:
           
       - name: Run kubeslice-controller chart-releaser
         if: ${{ github.event.inputs.kubeslice-controller == 'Yes' }}
-        uses: helm/chart-releaser-action@v1.4.1
+        uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: charts/
+          skip_existing: true
         env:
           CR_TOKEN: "${{ secrets.TOKEN }}"
           
       - name: Run kubeslice-worker chart-releaser
         if: ${{ github.event.inputs.kubeslice-worker == 'Yes' }}
-        uses: helm/chart-releaser-action@v1.4.1
+        uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: charts/
         env:
@@ -146,7 +147,7 @@ jobs:
           
       - name: Run prometheus chart-releaser
         if: ${{ github.event.inputs.prometheus == 'Yes' }}
-        uses: helm/chart-releaser-action@v1.4.1
+        uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: charts/
         env:
@@ -154,9 +155,8 @@ jobs:
           
       - name: Run botkube chart-releaser
         if: ${{ github.event.inputs.botkube == 'Yes' }}
-        uses: helm/chart-releaser-action@v1.4.1
+        uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: charts/
-          skip_existing: true
         env:
           CR_TOKEN: "${{ secrets.TOKEN }}"
