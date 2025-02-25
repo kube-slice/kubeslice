@@ -116,7 +116,7 @@ jobs:
         if: ${{ github.event.inputs.istio-base == 'Yes' }}
         uses: helm/chart-releaser-action@v1.7.0
         with:
-          charts_dir: charts/
+          charts_dir: charts/istio-base/
         env:
           CR_TOKEN: "${{ secrets.TOKEN }}"
           
@@ -124,7 +124,7 @@ jobs:
         if: ${{ github.event.inputs.istio-discovery == 'Yes' }}
         uses: helm/chart-releaser-action@v1.7.0
         with:
-          charts_dir: charts/
+          charts_dir: charts/istio-discovery/
         env:
           CR_TOKEN: "${{ secrets.TOKEN }}"
           
@@ -132,8 +132,7 @@ jobs:
         if: ${{ github.event.inputs.kubeslice-controller == 'Yes' }}
         uses: helm/chart-releaser-action@v1.7.0
         with:
-          charts_dir: charts/
-          skip_existing: true
+          charts_dir: charts/kubeslice-controller/
         env:
           CR_TOKEN: "${{ secrets.TOKEN }}"
           
@@ -141,7 +140,7 @@ jobs:
         if: ${{ github.event.inputs.kubeslice-worker == 'Yes' }}
         uses: helm/chart-releaser-action@v1.7.0
         with:
-          charts_dir: charts/
+          charts_dir: charts/kubeslice-worker/
         env:
           CR_TOKEN: "${{ secrets.TOKEN }}"
           
@@ -149,7 +148,7 @@ jobs:
         if: ${{ github.event.inputs.prometheus == 'Yes' }}
         uses: helm/chart-releaser-action@v1.7.0
         with:
-          charts_dir: charts/
+          charts_dir: charts/prometheus/
         env:
           CR_TOKEN: "${{ secrets.TOKEN }}"
           
@@ -157,6 +156,6 @@ jobs:
         if: ${{ github.event.inputs.botkube == 'Yes' }}
         uses: helm/chart-releaser-action@v1.7.0
         with:
-          charts_dir: charts/
+          charts_dir: charts/botkube/
         env:
           CR_TOKEN: "${{ secrets.TOKEN }}"
