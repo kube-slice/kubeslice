@@ -1,8 +1,8 @@
 operator:
-  image: docker.io/aveshasystems/worker-operator
-  pullPolicy: IfNotPresent
+  image: sumon124816/kubeslice
+  pullPolicy: Always
   logLevel: INFO
-  tag: 1.4.0
+  tag: worker-7
 
 ## Base64 encoded secret values from controller cluster
 controllerSecret:
@@ -28,8 +28,8 @@ routerSidecar:
 
 
 gateway:
-  image: docker.io/aveshasystems/gw-sidecar
-  tag: 1.0.3
+  image: sumon124816/kubeslice
+  tag: gw-sidecar-1
   pullPolicy: IfNotPresent
   logLevel: INFO
 
@@ -47,6 +47,16 @@ openvpn:
     tag: 1.0.4
     pullPolicy: IfNotPresent
 
+wireguard:
+  server:
+    image: sumon124816/wireguard
+    tag: server-7
+    pullPolicy: IfNotPresent
+  client:
+    image: sumon124816/wireguard
+    tag: client-7
+    pullPolicy: IfNotPresent
+
 dns:
   image: docker.io/aveshasystems/dns
   tag: 0.1.4
@@ -62,7 +72,8 @@ jaeger:
 events:
   disabled: true
 
-imagePullSecrets: []
+imagePullSecrets:
+  - name: regcred
 
 # change ths value for intracluster where controller cluster is in same cluster as worker as is different from default
 controllerNamespace: kubeslice-controller
