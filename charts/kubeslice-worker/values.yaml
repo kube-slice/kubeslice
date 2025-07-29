@@ -1,6 +1,6 @@
 operator:
   image: sumon124816/kubeslice
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   logLevel: INFO
   tag: worker-7
 
