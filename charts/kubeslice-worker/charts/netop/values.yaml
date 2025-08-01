@@ -8,8 +8,9 @@ global:
     password: ''
     email: ''
   imageRegistry: docker.io/aveshasystems
+  imageRegistryAC: ghcr.io/kube-slice
 netop:
   networkInterface: eth0
   image: netops
-  tag: 0.2.2 
+  tag: v0.3.0-ac
   pullPolicy: IfNotPresent

@@ -22,7 +22,7 @@ spec:
       imagePullSecrets:
       - name: {{ template "imagePullSecrets.secretName" . }}
       containers:
-        - image: '{{ .Values.global.imageRegistry }}/{{ .Values.forwardingPlane.kernelImageRegistry }}:{{ .Values.forwardingPlane.kernelImageTag }}'
+        - image: '{{ .Values.global.imageRegistryAC }}/{{ .Values.forwardingPlane.kernelImageRegistry }}:{{ .Values.forwardingPlane.kernelImageTag }}'
           imagePullPolicy: IfNotPresent
           name: forwarder-kernel
           securityContext:

@@ -13,15 +13,16 @@ global:
     password: ''
     email: ''
   imageRegistry: docker.io/aveshasystems
+  imageRegistryAC: ghcr.io/kube-slice
 
 webhookImageRegistry: cmd-admission-webhook-k8s
-webhookImageTag: 1.7.3
+webhookImageTag: v1.7.3
 
 nsmInjectContainerImageRegistry: cmd-nsc
-nsmInjectContainerImageTag: 1.5.13
+nsmInjectContainerImageTag: v1.5.12
 
 nsmInjectInitContainerImageRegistry: cmd-nsc-init
-nsmInjectInitContainerImageTag: 1.5.9
+nsmInjectInitContainerImageTag: v1.5.8
 nsmInitContainerUpdateDNSConfig: true
 
 # nsm admission webhook ns

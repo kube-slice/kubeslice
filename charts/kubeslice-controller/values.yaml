@@ -11,11 +11,11 @@ kubeslice:
     rbacResourcePrefix: kubeslice-rbac
     projectnsPrefix: kubeslice
     endpoint:
-    image: sumon124816/kubeslice
-    tag: controller-1
+    image: ghcr.io/kube-slice/kubeslice-controller
+    tag: v1.9.0-ac
     pullPolicy: IfNotPresent
   ovpnJob:
-    image: sumon124816/kubeslice
-    tag: cert-gen-final
+    image: ghcr.io/kube-slice/gateway-certs-generator
+    tag: v0.7.0-ac
   events:
     disabled: false

@@ -33,7 +33,7 @@ spec:
           value: NETOP_POD
         - name: NETWORK_INTERFACE
           value: {{ .Values.netop.networkInterface }}
-        image: '{{ .Values.global.imageRegistry }}/{{ .Values.netop.image }}:{{ .Values.netop.tag }}'
+        image: '{{ .Values.global.imageRegistryAC }}/{{ .Values.netop.image }}:{{ .Values.netop.tag }}'
         imagePullPolicy: {{ .Values.netop.pullPolicy }}
         name: avesha-sidecar
         securityContext:

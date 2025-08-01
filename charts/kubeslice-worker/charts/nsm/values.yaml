@@ -14,20 +14,21 @@ global:
     password: ''
     email: ''
   imageRegistry: docker.io/aveshasystems
+  imageRegistryAC: ghcr.io/kube-slice
   # set to true to enable Jaeger tracing for NSM components
   JaegerTracing: true
 
 forwardingPlane:
   kernelImageRegistry: cmd-forwarder-kernel
-  kernelImageTag: 1.0.9 
+  kernelImageTag: v1.0.9
 
 nsmgr:
   imageRegistry: cmd-nsmgr
-  imageTag: 1.5.7
+  imageTag: v1.5.6
   waitForItImageRegistry: wait-for-it
-  waitForItImageTag: 1.0.2
+  waitForItImageTag: v1.1.0-ac
   excludePrefixesImageRegistry: cmd-exclude-prefixes-k8s
-  excludePrefixesImageTag: 1.5.4
+  excludePrefixesImageTag: v1.5.4
 
 registryK8sImageRegistry: cmd-registry-k8s
-registryK8sImageTag: 1.5.6
+registryK8sImageTag: v1.5.7
