@@ -61,7 +61,7 @@ spec:
           # This is a small image with wait-for-it, choose whatever image
           # you prefer that waits for a service to be up. This image is built
           # from https://github.com/lqhl/wait-for-it
-          image: '{{ .Values.global.imageRegistryAC }}/{{ .Values.nsmgr.waitForItImageRegistry }}:{{ .Values.nsmgr.waitForItImageTag }}'
+          image: '{{ .Values.global.imageRegistry }}/{{ .Values.nsmgr.waitForItImageRegistry }}:{{ .Values.nsmgr.waitForItImageTag }}'
           imagePullPolicy: IfNotPresent
           args: [ "-t", "120", "spire-server.spire:8081" ]
           #command: ['sh', '-c', 'sleep 120']
@@ -87,7 +87,7 @@ spec:
       imagePullSecrets:
       - name: {{ template "imagePullSecrets.secretName" . }}
       containers:
-        - image: '{{ .Values.global.imageRegistryAC }}/{{ .Values.nsmgr.imageRegistry }}:{{ .Values.nsmgr.imageTag }}'
+        - image: '{{ .Values.global.imageRegistry }}/{{ .Values.nsmgr.imageRegistry }}:{{ .Values.nsmgr.imageTag }}'
           imagePullPolicy: IfNotPresent
           {{- if .Values.global.profile.openshift }}
           securityContext:
@@ -170,7 +170,7 @@ spec:
               command: ["/bin/grpc-health-probe", "-spiffe", "-addr=:5001"]
             failureThreshold: 25
             periodSeconds: 5
-        - image: '{{ .Values.global.imageRegistryAC }}/{{ .Values.nsmgr.excludePrefixesImageRegistry }}:{{ .Values.nsmgr.excludePrefixesImageTag }}'
+        - image: '{{ .Values.global.imageRegistry }}/{{ .Values.nsmgr.excludePrefixesImageRegistry }}:{{ .Values.nsmgr.excludePrefixesImageTag }}'
           imagePullPolicy: IfNotPresent
           {{- if .Values.global.profile.openshift }}
           securityContext:

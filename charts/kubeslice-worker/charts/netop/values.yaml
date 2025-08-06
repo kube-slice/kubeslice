@@ -3,12 +3,11 @@ global:
   # IF You dont have existing secret then pass all below values it will create new secret "avesha-docker-ips"
   ## MANDOTORY FIELDS IF EXISTING SECRET NOT PRESENT ##
   netop_docker_imagePullSecrets:
-    repository: 
+    repository:
     username: ''
     password: ''
     email: ''
-  imageRegistry: docker.io/aveshasystems
-  imageRegistryAC: ghcr.io/kube-slice
+  imageRegistry: ghcr.io/kube-slice
 netop:
   networkInterface: eth0
   image: netops
