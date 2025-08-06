@@ -39,11 +39,11 @@ gatewayEdge:
 
 openvpn:
   server:
-    image: docker.io/aveshasystems/openvpn-server.alpine
+    image: ghcr.io/kube-slice/openvpn-server.alpine
     tag: v1.0.4
     pullPolicy: IfNotPresent
   client:
-    image: docker.io/aveshasystems/openvpn-client.alpine
+    image: ghcr.io/kube-slice/openvpn-server.alpine
     tag: v1.0.4
     pullPolicy: IfNotPresent
 
@@ -61,10 +61,6 @@ dns:
   image: ghcr.io/kube-slice/dns
   tag: v0.2.0-ac
   pullPolicy: IfNotPresent
-
-workerInstaller:
-  image: docker.io/aveshasystems/worker-installer
-  tag: 1.5.0
 
 jaeger:
   enabled: false
