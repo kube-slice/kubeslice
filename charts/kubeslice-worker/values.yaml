@@ -90,3 +90,7 @@ nsm:
       priorityClassName: ""
     spiffe-csi-driver:
       priorityClassName: ""
+
+ocm:
+  enabled: false
+

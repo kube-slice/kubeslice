@@ -19,3 +19,9 @@ kubeslice:
     tag: v0.7.0-ac
   events:
     disabled: false
+
+ocm:
+  enabled: false
+  placement:
+    create: true
+    name: global

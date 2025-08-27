@@ -39,6 +39,9 @@ spec:
         - --leader-elect
         command:
         - /manager
+        {{- if .Values.ocm.enabled }}
+        - --ocm
+        {{- end }}
         image: '{{ .Values.operator.image }}:{{ .Values.operator.tag }}'
         imagePullPolicy: '{{ .Values.operator.pullPolicy }}'
         env:
