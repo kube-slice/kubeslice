@@ -2,7 +2,7 @@ operator:
   image: ghcr.io/kube-slice/worker-operator
   pullPolicy: IfNotPresent
   logLevel: INFO
-  tag: v1.6.0-ac
+  tag: v1.7.0-ac
 
 ## Base64 encoded secret values from controller cluster
 controllerSecret:

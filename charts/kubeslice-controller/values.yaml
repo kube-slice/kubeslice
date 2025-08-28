@@ -12,7 +12,7 @@ kubeslice:
     projectnsPrefix: kubeslice
     endpoint:
     image: ghcr.io/kube-slice/kubeslice-controller
-    tag: v1.9.0-ac
+    tag: v1.10.0-ac
     pullPolicy: IfNotPresent
   ovpnJob:
     image: ghcr.io/kube-slice/gateway-certs-generator

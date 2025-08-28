@@ -11,9 +11,9 @@ spec:
     displayName: {{ .Chart.Name }}
     description: {{ .Chart.Description }}
   installStrategy:
-    type: Placements
-    placements:
-      - name: {{ .Values.ocm.placement.name }}
-        namespace: {{ .Release.Namespace }}
+    type: Manual
+  supportedConfigs:
+    - group: controller.kubeslice.io
+      resource: clusters
 
 {{- end }}
