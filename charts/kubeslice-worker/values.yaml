@@ -94,3 +94,9 @@ nsm:
 ocm:
   enabled: false
 
+apiserver:
+  servingCerts:
+    generate: true
+    caCrt: ""
+    serverCrt: ""
+    serverKey: ""
