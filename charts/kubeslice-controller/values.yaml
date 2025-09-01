@@ -25,3 +25,6 @@ ocm:
   placement:
     create: true
     name: global
+
+distro:
+  openshift: false

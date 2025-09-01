@@ -358,3 +358,10 @@ Return if ingress supports pathType.
 {{- define "grafana.ingress.supportsPathType" -}}
   {{- or (eq (include "grafana.ingress.isStable" .) "true") (and (eq (include "grafana.ingress.apiVersion" .) "networking.k8s.io/v1beta1") (semverCompare ">= 1.18-0" .Capabilities.KubeVersion.Version)) -}}
 {{- end -}}
+
+{{/*
+Returns whether the OpenShift distribution is used
+*/}}
+{{- define "distro.openshift" -}}
+{{- ternary "true" "false" .Values.distro.openshift -}}
+{{- end }}
