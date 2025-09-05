@@ -26,6 +26,10 @@ spec:
       containers:
         - name: spire-server
           image: '{{ .Values.global.imageRegistry }}/{{ .Values.spireServer.imageRegistry }}:{{ .Values.spireServer.imageTag }}'
+          {{- if .Values.global.distro.openshift }}
+          securityContext:
+            privileged: true
+          {{- end }}
           args:
             - -config
             - /run/spire/config/server.conf

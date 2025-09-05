@@ -78,6 +78,8 @@ global:
   imageRegistry: ghcr.io/kube-slice
   profile:
     openshift: false
+  distro:
+    openshift: false
 
 # enable/disable network component installation
 kubesliceNetworking:

@@ -89,7 +89,7 @@ spec:
       containers:
         - image: '{{ .Values.global.imageRegistry }}/{{ .Values.nsmgr.imageRegistry }}:{{ .Values.nsmgr.imageTag }}'
           imagePullPolicy: IfNotPresent
-          {{- if .Values.global.profile.openshift }}
+          {{- if .Values.global.distro.openshift }}
           securityContext:
             privileged: true
           {{- end }}
@@ -172,7 +172,7 @@ spec:
             periodSeconds: 5
         - image: '{{ .Values.global.imageRegistry }}/{{ .Values.nsmgr.excludePrefixesImageRegistry }}:{{ .Values.nsmgr.excludePrefixesImageTag }}'
           imagePullPolicy: IfNotPresent
-          {{- if .Values.global.profile.openshift }}
+          {{- if .Values.global.distro.openshift }}
           securityContext:
             privileged: true
           {{- end }}

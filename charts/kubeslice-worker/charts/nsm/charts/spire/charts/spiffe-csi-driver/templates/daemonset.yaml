@@ -55,7 +55,7 @@ spec:
             - mountPath: {{ .Values.kubeletPath }}/pods
               mountPropagation: Bidirectional
               name: mountpoint-dir
-              {{- if .Values.global.profile.openshift }}
+              {{- if .Values.global.distro.openshift }}
             # The volume containing mount points for containers in openshift clusters
             - name: openshift-mountpoint-dir
               mountPath: /var/data/kubelet/pods
@@ -99,7 +99,7 @@ spec:
           resources:
             {{- toYaml .Values.nodeDriverRegistrar.resources | nindent 12 }}
       volumes:
-          {{- if .Values.global.profile.openshift }}
+          {{- if .Values.global.distro.openshift }}
         # where SPIFFE CSI driver mounts volume in openshift clusters 
         - name: openshift-mountpoint-dir
           hostPath:
