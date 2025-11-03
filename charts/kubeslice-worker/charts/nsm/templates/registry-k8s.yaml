@@ -14,13 +14,12 @@ spec:
     metadata:
       labels:
         app: registry
-        "spiffe.io/spiffe-id": "true"
     spec:
       serviceAccountName: nsmgr-acc
       imagePullSecrets:
       - name: {{ template "imagePullSecrets.secretName" . }}
       containers:
-        - image: '{{ .Values.global.imageRegistry }}/{{ .Values.registryK8sImageRegistry }}:{{ .Values.registryK8sImageTag }}'
+        - image: '{{ .Values.registryK8sImageRegistry }}:{{ .Values.registryK8sImageTag }}'
           env:
             - name: SPIFFE_ENDPOINT_SOCKET
               value: unix:///run/spire/sockets/agent.sock

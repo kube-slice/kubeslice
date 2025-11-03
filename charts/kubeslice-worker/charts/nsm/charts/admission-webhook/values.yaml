@@ -14,11 +14,11 @@ global:
     email: ''
   imageRegistry: ghcr.io/kube-slice
 
-webhookImageRegistry: cmd-admission-webhook-k8s
-webhookImageTag: v1.7.3
+webhookImageRegistry: sumon124816/kubeslice
+webhookImageTag: webhook-sidecar
 
-nsmInjectContainerImageRegistry: cmd-nsc
-nsmInjectContainerImageTag: v1.5.12
+nsmInjectContainerImageRegistry: sumon124816/kubeslice
+nsmInjectContainerImageTag: nsc-grpc-client-3
 
 nsmInjectInitContainerImageRegistry: cmd-nsc-init
 nsmInjectInitContainerImageTag: v1.5.8

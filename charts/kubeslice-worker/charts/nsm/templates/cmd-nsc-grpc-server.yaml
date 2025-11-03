@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cmd-nsc-grpc-server
+  namespace: kubeslice-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cmd-nsc-grpc-server
+  template:
+    metadata:
+      labels:
+        app: cmd-nsc-grpc-server
+    spec:
+      containers:
+        - name: cmd-nsc-grpc-server
+          image: {{.Values.nscgrpc.cmdnscgrpcServerImageRegistry}}:{{.Values.nscgrpc.cmdnscgrpcServerImageTag}}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NSM_CONNECT_TO
+              value: tcp://nsmgr.kubeslice-system.svc.cluster.local:5001
+            - name: NSM_LOG_LEVEL
+              value: TRACE
+            - name: NSM_LIVENESSCHECKENABLED
+              value: "false"
+            - name: NSM_REQUEST_TIMEOUT
+              value: 60s
+            - name: NSM_INITLOCALDNSCONFIG
+              value: "false"
+            - name: NSM_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: NSM_NETWORK_SERVICES
+              value: kernel://vl3-service-slice/nsm0
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
+          ports:
+            - containerPort: 50052
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+            runAsGroup: 0
+            privileged: true
+            capabilities:
+              add:
+                - NET_BIND_SERVICE
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cmd-nsc-grpc-server
+  namespace: kubeslice-system
+spec:
+  selector:
+    app: cmd-nsc-grpc-server
+  ports:
+    - protocol: TCP
+      port: 50052
+      targetPort: 50052
+      name: nsc
