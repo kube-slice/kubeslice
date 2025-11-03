@@ -29,16 +29,10 @@ subjects:
     name: admission-webhook-sa
     namespace: kubeslice-nsm-webhook-system
   - kind: ServiceAccount
-    name: spiffe-csi-driver
-    namespace: spire
-  - kind: ServiceAccount
-    name: spire-server
-    namespace: spire
-  - kind: ServiceAccount
-    name: spire-agent
-    namespace: spire
-  - kind: ServiceAccount
     name: forwarder-kernel
+    namespace: {{ .Release.Namespace }}
+  - kind: ServiceAccount
+    name: nsc-grpc-server
     namespace: {{ .Release.Namespace }}
   - kind: ServiceAccount
     name: nsmgr-acc

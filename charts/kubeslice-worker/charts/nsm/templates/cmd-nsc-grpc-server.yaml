@@ -13,6 +13,9 @@ spec:
       labels:
         app: cmd-nsc-grpc-server
     spec:
+      {{- if .Values.global.distro.openshift }}
+      serviceAccountName: nsc-grpc-server
+      {{end}}
       containers:
         - name: cmd-nsc-grpc-server
           image: {{.Values.nscgrpc.cmdnscgrpcServerImageRegistry}}:{{.Values.nscgrpc.cmdnscgrpcServerImageTag}}
