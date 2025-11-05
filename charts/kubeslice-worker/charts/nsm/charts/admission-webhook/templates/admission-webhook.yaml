@@ -66,7 +66,7 @@ spec:
       containers:
         - name: admission-webhook-k8s
           image: '{{ .Values.webhookImageRegistry }}:{{ .Values.webhookImageTag }}'
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           {{- if .Values.global.distro.openshift }}
           securityContext:
             privileged: true
@@ -109,6 +109,8 @@ spec:
               value: /etc/webhook/certs/tls.crt
             - name: NSM_KEY_FILE_PATH
               value: /etc/webhook/certs/tls.key
+            - name: NSC_GRPC_SERVER_ADDR
+              value: {{.Values.nscGrpcServerAddr}}
           volumeMounts:
             - name: webhook-certs
               mountPath: /etc/webhook/certs

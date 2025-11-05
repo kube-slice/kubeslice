@@ -1,8 +1,8 @@
 operator:
   image: sumon124816/kubeslice
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   logLevel: INFO
-  tag: worker-spire
+  tag: worker-sidecar
 
 ## Base64 encoded secret values from controller cluster
 controllerSecret:

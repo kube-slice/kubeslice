@@ -4,10 +4,4 @@ kind: ServiceAccount
 metadata:
   name: forwarder-kernel
   namespace: {{ .Release.Namespace }}
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: nsc-grpc-server
-  namespace: {{ .Release.Namespace }}
 {{end}}

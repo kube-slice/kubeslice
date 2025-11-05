@@ -1,10 +1,43 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nsc-grpc-server
+  namespace: kubeslice-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: nsc-grpc-server-pod-reader
+  namespace: kubeslice-system
+rules:
+  - apiGroups: [""]
+    resources:
+      - pods
+    verbs:
+      - get
+      - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: nsc-grpc-server-pod-reader-binding
+  namespace: kubeslice-system
+subjects:
+  - kind: ServiceAccount
+    name: nsc-grpc-server
+    namespace: kubeslice-system
+roleRef:
+  kind: Role
+  name: nsc-grpc-server-pod-reader
+  apiGroup: rbac.authorization.k8s.io
+---
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: cmd-nsc-grpc-server
   namespace: kubeslice-system
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: cmd-nsc-grpc-server
@@ -13,13 +46,11 @@ spec:
       labels:
         app: cmd-nsc-grpc-server
     spec:
-      {{- if .Values.global.distro.openshift }}
       serviceAccountName: nsc-grpc-server
-      {{end}}
       containers:
         - name: cmd-nsc-grpc-server
           image: {{.Values.nscgrpc.cmdnscgrpcServerImageRegistry}}:{{.Values.nscgrpc.cmdnscgrpcServerImageTag}}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
             - name: NSM_CONNECT_TO
               value: tcp://nsmgr.kubeslice-system.svc.cluster.local:5001

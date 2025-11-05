@@ -19,6 +19,7 @@ webhookImageTag: webhook-sidecar
 
 nsmInjectContainerImageRegistry: sumon124816/kubeslice
 nsmInjectContainerImageTag: nsc-grpc-client-3
+nscGrpcServerAddr: cmd-nsc-grpc-server.kubeslice-system.svc.cluster.local:50052
 
 nsmInjectInitContainerImageRegistry: cmd-nsc-init
 nsmInjectInitContainerImageTag: v1.5.8
