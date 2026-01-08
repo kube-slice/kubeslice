@@ -77,7 +77,7 @@ spec:
       imagePullSecrets:
       - name: {{ template "imagePullSecrets.secretName" . }}
       containers:
-        - image: '{{ .Values.nsmgr.imageRegistry }}:{{ .Values.nsmgr.imageTag }}'
+        - image: '{{ .Values.global.imageRegistry }}/{{ .Values.nsmgr.imageRegistry }}:{{ .Values.nsmgr.imageTag }}'
           imagePullPolicy: IfNotPresent
           {{- if .Values.global.distro.openshift }}
           securityContext:

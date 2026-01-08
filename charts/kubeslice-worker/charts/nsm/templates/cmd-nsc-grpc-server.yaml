@@ -49,7 +49,7 @@ spec:
       serviceAccountName: nsc-grpc-server
       containers:
         - name: cmd-nsc-grpc-server
-          image: {{.Values.nscgrpc.cmdnscgrpcServerImageRegistry}}:{{.Values.nscgrpc.cmdnscgrpcServerImageTag}}
+          image: "{{ .Values.global.imageRegistry }}/{{.Values.nscgrpc.cmdnscgrpcServerImageRegistry}}:{{.Values.nscgrpc.cmdnscgrpcServerImageTag}}"
           imagePullPolicy: Always
           env:
             - name: NSM_CONNECT_TO
@@ -85,7 +85,7 @@ spec:
             runAsNonRoot: false
             runAsUser: 0
             runAsGroup: 0
-            privileged: true
+            privileged: {{.Values.global.distro.openshift}}
             capabilities:
               add:
                 - NET_BIND_SERVICE

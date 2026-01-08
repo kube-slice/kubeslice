@@ -18,20 +18,20 @@ global:
   JaegerTracing: true
 
 forwardingPlane:
-  kernelImageRegistry: sumon124816/kubeslice
-  kernelImageTag: kernel-spire
+  kernelImageRegistry: cmd-forwarder-kernel
+  kernelImageTag: v2026.1.15
 
 nsmgr:
-  imageRegistry: sumon124816/kubeslice
-  imageTag: nsm-spire
+  imageRegistry: cmd-nsmgr
+  imageTag: v2026.1.15
   waitForItImageRegistry: wait-for-it
   waitForItImageTag: v1.1.0-ac
   excludePrefixesImageRegistry: cmd-exclude-prefixes-k8s
   excludePrefixesImageTag: v1.5.4
 
-registryK8sImageRegistry: sumon124816/kubeslice
-registryK8sImageTag: registry-spire
+registryK8sImageRegistry: cmd-registry-k8s
+registryK8sImageTag: v2026.1.15
 
 nscgrpc:
-  cmdnscgrpcServerImageRegistry: sumon124816/kubeslice
-  cmdnscgrpcServerImageTag: nsc-sidecar
+  cmdnscgrpcServerImageRegistry: cmd-nsc
+  cmdnscgrpcServerImageTag: v2026.1.15
