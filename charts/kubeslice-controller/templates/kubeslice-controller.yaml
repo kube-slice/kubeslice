@@ -1558,6 +1558,24 @@ metadata:
   creationTimestamp: null
   name: kubeslice-controller-controller-role
 rules:
+- apiGroups: ["addon.open-cluster-management.io"]
+  resources:
+    - clustermanagementaddons
+    - managedclusteraddons
+    - managedclusteraddons/status
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["work.open-cluster-management.io"]
+  resources:
+    - manifestworks
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["cluster.open-cluster-management.io"]
+  resources:
+    - managedclusters
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["certificates.k8s.io"]
+  resources:
+    - certificatesigningrequests
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups:
   - ""
   resources:

@@ -12,10 +12,20 @@ kubeslice:
     projectnsPrefix: kubeslice
     endpoint:
     image: ghcr.io/kube-slice/kubeslice-controller
-    tag: v1.9.0-ac
+    tag: v2026.1.15
     pullPolicy: IfNotPresent
   ovpnJob:
     image: ghcr.io/kube-slice/gateway-certs-generator
     tag: v0.7.0-ac
   events:
     disabled: false
+
+ocm:
+  enabled: false
+  placement:
+    create: true
+    name: global
+
+distro:
+  openshift: false
+  ubi: ""

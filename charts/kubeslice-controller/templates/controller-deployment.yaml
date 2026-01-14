@@ -40,9 +40,14 @@ spec:
         - --project-namespace-prefix={{ required "A valid value is required!" .Values.kubeslice.controller.projectnsPrefix }}
         - --controller-end-point={{ required "A valid value is required!" .Values.kubeslice.controller.endpoint }}
         - --ovpn-job-image={{ .Values.kubeslice.ovpnJob.image }}:{{ .Values.kubeslice.ovpnJob.tag }}
+        {{- if .Values.ocm.enabled }}
+        - --ocm
+        {{- end }}
         command:
         - /manager
         env:
+        - name: Openshift
+          value: {{ include "distro.openshift" . }}
         - name: KUBESLICE_CONTROLLER_MANAGER_NAMESPACE
           valueFrom:
             fieldRef:

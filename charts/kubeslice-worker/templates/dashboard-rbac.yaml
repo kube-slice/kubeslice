@@ -39,5 +39,6 @@ kind: Secret
 type: kubernetes.io/service-account-token
 metadata:
   name: kubeslice-kubernetes-dashboard-creds
+  namespace: kubeslice-system
   annotations:
     kubernetes.io/service-account.name: "kubeslice-kubernetes-dashboard"
