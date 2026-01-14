@@ -47,7 +47,7 @@ spec:
         - /manager
         env:
         - name: Openshift
-          value: {{ .Values.distro.openshift | quote }}
+          value: {{ include "distro.openshift" . }}
         - name: KUBESLICE_CONTROLLER_MANAGER_NAMESPACE
           valueFrom:
             fieldRef:

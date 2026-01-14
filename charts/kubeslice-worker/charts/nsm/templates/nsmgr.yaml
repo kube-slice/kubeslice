@@ -79,7 +79,7 @@ spec:
       containers:
         - image: '{{ .Values.global.imageRegistry }}/{{ .Values.nsmgr.imageRegistry }}:{{ .Values.nsmgr.imageTag }}'
           imagePullPolicy: IfNotPresent
-          {{- if .Values.global.distro.openshift }}
+          {{- if eq "true" ( include "distro.openshift" . ) }}
           securityContext:
             privileged: true
           {{- end }}
@@ -138,7 +138,7 @@ spec:
               cpu: 500m
         - image: '{{ .Values.global.imageRegistry }}/{{ .Values.nsmgr.excludePrefixesImageRegistry }}:{{ .Values.nsmgr.excludePrefixesImageTag }}'
           imagePullPolicy: IfNotPresent
-          {{- if .Values.global.distro.openshift }}
+          {{- if eq "true" ( include "distro.openshift" . ) }}
           securityContext:
             privileged: true
           {{- end }}

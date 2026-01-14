@@ -76,10 +76,9 @@ controllerNamespace: kubeslice-controller
 
 global:
   imageRegistry: ghcr.io/kube-slice
-  profile:
-    openshift: false
   distro:
     openshift: false
+    ubi: ""
 
 # enable/disable network component installation
 kubesliceNetworking:

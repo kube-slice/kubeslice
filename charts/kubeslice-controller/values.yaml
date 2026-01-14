@@ -28,3 +28,4 @@ ocm:
 
 distro:
   openshift: false
+  ubi: ""

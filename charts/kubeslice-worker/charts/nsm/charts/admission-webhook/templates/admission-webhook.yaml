@@ -67,7 +67,7 @@ spec:
         - name: admission-webhook-k8s
           image: '{{ .Values.global.imageRegistry }}/{{ .Values.webhookImageRegistry }}:{{ .Values.webhookImageTag }}'
           imagePullPolicy: IfNotPresent
-          {{- if .Values.global.distro.openshift }}
+          {{- if eq "true" ( include "distro.openshift" . ) }}
           securityContext:
             privileged: true
           {{end}}
@@ -100,7 +100,7 @@ spec:
             - name: NSM_ENVS
               value: NSM_CONNECT_TO=tcp://nsmgr.kubeslice-system.svc.cluster.local:5001,NSM_LOG_LEVEL=TRACE,NSM_LIVENESSCHECKENABLED=false,NSM_REQUEST_TIMEOUT=60s,NSM_INITLOCALDNSCONFIG={{ .Values.nsmInitContainerUpdateDNSConfig }}
             - name: PROFILE_OPENSHIFT
-              value: "{{ .Values.global.distro.openshift | default false }}"
+              value: {{ include "distro.openshift" . }}
             - name: NSM_REGISTER_WEBHOOK_CLIENT
               value: "false"
             - name: NSM_CA_BUNDLE
