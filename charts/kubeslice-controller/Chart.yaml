@@ -27,7 +27,7 @@ keywords:
 - networking
 - infrastructure
 - application
-kubeVersion: '>= 1.28.0'
+kubeVersion: '>= 1.28.0-0'
 home: https://github.com/kube-slice
 version: v2026.1.15
 appVersion: v2026.1.15
