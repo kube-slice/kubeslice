@@ -4,8 +4,8 @@
 
 kubeslice:
   rbacproxy:
-    image: gcr.io/kubebuilder/kube-rbac-proxy
-    tag: v0.8.0
+    image: ghcr.io/appscode/kube-rbac-proxy
+    tag: v0.18.2
   controller:
     logLevel: debug
     rbacResourcePrefix: kubeslice-rbac
