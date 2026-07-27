@@ -67,6 +67,8 @@ spec:
         - name: admission-webhook-k8s
           image: '{{ .Values.global.imageRegistry }}/{{ .Values.webhookImageRegistry }}:{{ .Values.webhookImageTag }}'
           imagePullPolicy: IfNotPresent
+          resources:
+            {{- toYaml .Values.webhookResources | nindent 12 }}
           {{- if eq "true" ( include "distro.openshift" . ) }}
           securityContext:
             privileged: true

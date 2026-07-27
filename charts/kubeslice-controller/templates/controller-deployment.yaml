@@ -27,6 +27,8 @@ spec:
         - --v=10
         image: '{{ .Values.kubeslice.rbacproxy.image }}:{{ .Values.kubeslice.rbacproxy.tag }}'
         name: kube-rbac-proxy
+        resources:
+          {{- toYaml .Values.kubeslice.rbacproxy.resources | nindent 10 }}
         ports:
         - containerPort: 8443
           name: https
@@ -72,12 +74,7 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 10
         resources:
-          limits:
-            cpu: 500m
-            memory: 128Mi
-          requests:
-            cpu: 10m
-            memory: 64Mi
+          {{- toYaml .Values.kubeslice.controller.resources | nindent 10 }}
         securityContext:
           allowPrivilegeEscalation: false
         volumeMounts:

@@ -1,0 +1,165 @@
+# kubeslice-worker -- production resource profile
+#
+#   helm install kubeslice-worker kubeslice/kubeslice-worker \
+#     -f values.yaml -f values-prod.yaml
+#
+# Target: a cluster carrying sustained read/write traffic for several databases
+# and applications on the slice -- on the order of 100-250 slice-onboarded pods
+# per cluster, multiple slices, and continuous cross-cluster replication.
+#
+# HOW THESE WERE DERIVED
+# Measured steady-state usage on a live 3-cluster slice (~10 slice-onboarded
+# pods per cluster, 4 gateway pods, 4 databases):
+#
+#   nsc-grpc-server  69Mi    kubeslice-dns    58Mi    worker-operator  49Mi / 62m
+#   registry-k8s     46Mi    nsmgr            40Mi    vl3 router       37Mi
+#   forwarder-kernel 43Mi    netop            22Mi    gateway sidecar  16-28Mi
+#
+# Two things drive the numbers below beyond that baseline:
+#
+#  1. These components are sized by CONNECTION COUNT and CHURN, not throughput.
+#     The per-node NSM components (nsmgr, forwarder-kernel, nsc-grpc-server)
+#     hold per-connection state for every slice-onboarded pod on their node, so
+#     they scale with pod density. Bulk data does not flow through them -- the
+#     kernel datapath and WireGuard crypto run in softirq on the node, so higher
+#     database traffic costs node CPU rather than pod CPU.
+#
+#  2. The failure mode is a spike during churn, not steady growth. In production
+#     we observed forwarder-kernel OOMKilled at a 500Mi limit while its steady
+#     state was 43Mi -- the kill happened during an NSM heal storm, when every
+#     client reconnects at once. Memory limits here are therefore sized for the
+#     reconnect storm (~20x steady state), not for the idle footprint.
+#
+# EVERY CONTAINER GETS A MEMORY REQUEST. Several of these shipped with no
+# resources at all (BestEffort) or with a CPU request but no memory request,
+# which makes them the first things the kubelet evicts under node pressure --
+# including the vl3 router and the NSM dataplane. Evicting the dataplane to
+# save a node is a false economy: it takes the overlay down for every workload
+# on that cluster.
+
+nsm:
+  # Datapath forwarder. Per-connection state + reconnect-storm spikes.
+  # 1Gi is ~23x measured steady state. If this OOMs again at 1Gi, treat it as a
+  # leak in cmd-forwarder-kernel and open an upstream issue -- do not just raise it.
+  forwardingPlane:
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: "2"
+        memory: 1Gi
+
+  # NSM manager. Brokers every connection request on the node; CPU is bursty
+  # during heal, so the limit is well above the request on purpose.
+  nsmgr:
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: "1"
+        memory: 1Gi
+    excludePrefixesResources:
+      requests:
+        cpu: 25m
+        memory: 32Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+
+  # NSM client daemon. Highest measured memory consumer of the mesh components
+  # (69Mi in a small lab) and previously BestEffort.
+  nscgrpc:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: "1"
+        memory: 512Mi
+
+  # NSE/NSM registry. Scales with the number of registered endpoints.
+  registryK8sResources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: "1"
+      memory: 512Mi
+  admission-webhook:
+    # NSM admission webhook: injects the NSM client into every slice-onboarded pod.
+    # It is in the pod-admission path for the whole cluster -- if it is evicted or
+    # throttled, pod creation stalls slice-wide, so it gets a real request.
+    webhookResources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: "1"
+        memory: 512Mi
+
+
+
+netop:
+  # QoS/TC enforcement. Light, but previously BestEffort on every node.
+  netop:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi
+
+# Reconciles slices, gateways and the vl3 router. CPU-bound during slice churn
+# (measured 62m at rest in a 1-slice lab; scales with slice and gateway count).
+operator:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+
+# Serves *.slice.local for every slice workload, so its query rate scales with
+# application count, not with slice count.
+dns:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: "1"
+      memory: 512Mi
+
+# NOT COVERED BY THIS FILE
+#
+# The vl3 slice router (vl3-nse + router-sidecar) and the slice gateway pods are
+# created at runtime by worker-operator, not by this chart, and it hardcodes
+# their resources -- the vl3 router currently runs with none at all, i.e.
+# BestEffort, despite being the component that carries the entire overlay.
+# The gateway wireguard containers are BestEffort too.
+#
+# Sizing those needs worker-operator to expose resource knobs the way it already
+# exposes AVESHA_VL3_SIDECAR_IMAGE and friends. Until then, a production
+# operator should consider a ResourceQuota/LimitRange in kubeslice-system, or a
+# priorityClassName on the dataplane, so an overcommitted node does not evict
+# the overlay first. Suggested starting points once knobs exist:
+#
+#   vl3-nse            requests 100m/128Mi   limits 1/512Mi
+#   router-sidecar     requests 100m/128Mi   limits 1/512Mi
+#   gateway sidecar    requests 100m/128Mi   limits 1/512Mi
+#   wireguard server   requests  50m/64Mi    limits 500m/256Mi
+
+# kube-rbac-proxy sidecar on worker-operator (metrics auth proxy). Small, but it
+# shipped BestEffort, so it was an eviction candidate sitting next to the operator.
+rbacproxy:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi

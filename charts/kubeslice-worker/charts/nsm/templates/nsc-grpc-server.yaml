@@ -49,6 +49,8 @@ spec:
         - name: nsc-grpc-server
           image: "{{ .Values.global.imageRegistry }}/{{.Values.nscgrpc.cmdnscgrpcServerImageRegistry}}:{{.Values.nscgrpc.cmdnscgrpcServerImageTag}}"
           imagePullPolicy: Always
+          resources:
+            {{- toYaml .Values.nscgrpc.resources | nindent 12 }}
           env:
             - name: NSM_CONNECT_TO
               value: tcp://nsmgr.kubeslice-system.svc:5001

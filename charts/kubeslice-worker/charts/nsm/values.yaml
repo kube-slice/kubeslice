@@ -20,6 +20,14 @@ global:
 forwardingPlane:
   kernelImageRegistry: cmd-forwarder-kernel
   kernelImageTag: v2026.1.15
+  # Datapath forwarder. Sized by the number of NSM connections on the node and
+  # spikes during connection churn (heal storms), not by steady-state traffic.
+  resources:
+    requests:
+      cpu: 150m
+    limits:
+      memory: 500Mi
+      cpu: 525m
 
 nsmgr:
   imageRegistry: cmd-nsmgr
@@ -28,10 +36,32 @@ nsmgr:
   waitForItImageTag: v1.1.0-ac
   excludePrefixesImageRegistry: cmd-exclude-prefixes-k8s
   excludePrefixesImageTag: v1.5.4
+  resources:
+    requests:
+      cpu: 200m
+      memory: 100Mi
+    limits:
+      memory: 200Mi
+      cpu: 500m
+  excludePrefixesResources:
+    limits:
+      memory: 40Mi
+      cpu: 75m
 
 registryK8sImageRegistry: cmd-registry-k8s
 registryK8sImageTag: v2026.1.15
+registryK8sResources:
+  requests:
+    cpu: 200m
+  limits:
+    memory: 100Mi
+    cpu: 600m
 
 nscgrpc:
   cmdnscgrpcServerImageRegistry: cmd-nsc
   cmdnscgrpcServerImageTag: v2026.1.15
+
+  # Empty by default to preserve the previous behaviour, where this container
+  # declared no resources and therefore ran as BestEffort. The environment
+  # values files set it -- see values-{dev,stage,prod}.yaml.
+  resources: {}

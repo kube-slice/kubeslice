@@ -3,6 +3,13 @@ operator:
   pullPolicy: IfNotPresent
   logLevel: INFO
   tag: v2026.1.15
+  resources:
+    limits:
+      cpu: 500m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
 
 ## Base64 encoded secret values from controller cluster
 controllerSecret:
@@ -61,6 +68,13 @@ dns:
   image: ghcr.io/kube-slice/dns
   tag: v0.2.0-ac
   pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 50m
+      memory: 128Mi
 
 jaeger:
   enabled: false
@@ -101,3 +115,8 @@ apiserver:
     caCrt: ""
     serverCrt: ""
     serverKey: ""
+
+# kube-rbac-proxy sidecar on the worker-operator. Empty by default to preserve
+# the previous BestEffort behaviour; set by values-{dev,stage,prod}.yaml.
+rbacproxy:
+  resources: {}

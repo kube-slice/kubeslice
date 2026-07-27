@@ -45,11 +45,7 @@ spec:
             - name: spire-agent-socket
               mountPath: /run/spire/sockets
           resources:
-            requests:
-              cpu: 200m
-            limits:
-              memory: 100Mi
-              cpu: 600m
+            {{- toYaml .Values.registryK8sResources | nindent 12 }}
       volumes:
         - name: spire-agent-socket
           hostPath:

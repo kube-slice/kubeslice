@@ -1,0 +1,110 @@
+# kubeslice-worker -- staging resource profile
+#
+#   helm install kubeslice-worker kubeslice/kubeslice-worker \
+#     -f values.yaml -f values-stage.yaml
+#
+# Target: a pre-production mirror -- same topology and failure modes as prod,
+# smaller scale. Roughly 20-60 slice-onboarded pods per cluster, a couple of
+# slices, intermittent rather than sustained cross-cluster traffic.
+#
+# Roughly half the prod ceilings. The requests are still real, because the point
+# of staging is to reproduce production's scheduling and eviction behaviour: if
+# staging runs BestEffort it will not reproduce the eviction bugs you are trying
+# to catch before they reach production.
+#
+# Memory limits keep prod's shape -- generous relative to steady state -- because
+# the failure being guarded against is a reconnect storm during an NSM heal, and
+# that storm happens at any cluster size. A staging cluster with prod's pod
+# density on fewer nodes can spike just as hard.
+#
+# See values-prod.yaml for how these numbers were derived from measured usage.
+
+nsm:
+  forwardingPlane:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: "1"
+        memory: 512Mi
+
+  nsmgr:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    excludePrefixesResources:
+      requests:
+        cpu: 25m
+        memory: 32Mi
+      limits:
+        cpu: 100m
+        memory: 64Mi
+
+  nscgrpc:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+  registryK8sResources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  admission-webhook:
+    webhookResources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi
+
+
+
+netop:
+  netop:
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+
+operator:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: "1"
+      memory: 512Mi
+
+dns:
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+rbacproxy:
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 128Mi

@@ -6,7 +6,17 @@ kubeslice:
   rbacproxy:
     image: ghcr.io/appscode/kube-rbac-proxy
     tag: v0.18.2
+    # Empty by default to preserve the previous BestEffort behaviour;
+    # set by values-{dev,stage,prod}.yaml.
+    resources: {}
   controller:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
     logLevel: debug
     rbacResourcePrefix: kubeslice-rbac
     projectnsPrefix: kubeslice

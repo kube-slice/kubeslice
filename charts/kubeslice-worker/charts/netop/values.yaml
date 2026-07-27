@@ -13,3 +13,6 @@ netop:
   image: netops
   tag: v0.3.0-ac
   pullPolicy: IfNotPresent
+
+  # Empty by default to preserve the previous BestEffort behaviour.
+  resources: {}

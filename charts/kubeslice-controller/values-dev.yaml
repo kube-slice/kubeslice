@@ -1,0 +1,27 @@
+# kubeslice-controller -- development resource profile
+#
+#   helm install kubeslice-controller kubeslice/kubeslice-controller \
+#     -f values.yaml -f values-dev.yaml
+#
+# Laptop/CI hub with one or two worker clusters. Small requests so it schedules
+# on a modest node; limits above measured steady state so a developer does not
+# hit an OOMKill that is really just a tight ceiling.
+#
+# NOT FOR PRODUCTION -- these requests will not protect the hub from eviction.
+kubeslice:
+  controller:
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi
+  rbacproxy:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 200m
+        memory: 128Mi

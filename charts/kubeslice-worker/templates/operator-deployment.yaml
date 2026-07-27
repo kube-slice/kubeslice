@@ -29,6 +29,8 @@ spec:
         - --v=10
         image: ghcr.io/appscode/kube-rbac-proxy:v0.18.2
         name: kube-rbac-proxy
+        resources:
+          {{- toYaml .Values.rbacproxy.resources | nindent 10 }}
         ports:
         - containerPort: 8443
           name: https
@@ -111,12 +113,7 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 10
         resources:
-          limits:
-            cpu: 500m
-            memory: 128Mi
-          requests:
-            cpu: 10m
-            memory: 64Mi
+          {{- toYaml .Values.operator.resources | nindent 10 }}
         securityContext:
           allowPrivilegeEscalation: false
         volumeMounts:

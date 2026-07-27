@@ -54,11 +54,7 @@ spec:
             - name: cgroup
               mountPath: /host/sys/fs/cgroup
           resources:
-            requests:
-              cpu: 150m
-            limits:
-              memory: 500Mi
-              cpu: 525m
+            {{- toYaml .Values.forwardingPlane.resources | nindent 12 }}
       volumes:
         - name: nsm-socket
           hostPath:

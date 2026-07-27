@@ -130,12 +130,7 @@ spec:
             - name: nsm-config-volume
               mountPath: /var/lib/networkservicemesh/config/
           resources:
-            requests:
-              cpu: 200m
-              memory: 100Mi
-            limits:
-              memory: 200Mi
-              cpu: 500m
+            {{- toYaml .Values.nsmgr.resources | nindent 12 }}
         - image: '{{ .Values.global.imageRegistry }}/{{ .Values.nsmgr.excludePrefixesImageRegistry }}:{{ .Values.nsmgr.excludePrefixesImageTag }}'
           imagePullPolicy: IfNotPresent
           {{- if eq "true" ( include "distro.openshift" . ) }}
@@ -154,9 +149,7 @@ spec:
             - name: nsm-config-volume
               mountPath: /var/lib/networkservicemesh/config/
           resources:
-            limits:
-              memory: 40Mi
-              cpu: 75m
+            {{- toYaml .Values.nsmgr.excludePrefixesResources | nindent 12 }}
       volumes:
         - hostPath:
             path: /var/lib/kubelet/device-plugins

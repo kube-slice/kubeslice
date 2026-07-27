@@ -34,3 +34,7 @@ apiserver:
     caCrt: ""
     serverCrt: ""
     serverKey: ""
+
+# Empty by default to preserve the previous BestEffort behaviour;
+# set by the kubeslice-worker values-{dev,stage,prod}.yaml files.
+webhookResources: {}

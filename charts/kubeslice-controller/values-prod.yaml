@@ -1,0 +1,31 @@
+# kubeslice-controller -- production resource profile
+#
+#   helm install kubeslice-controller kubeslice/kubeslice-controller \
+#     -f values.yaml -f values-prod.yaml
+#
+# The controller is the hub: it reconciles every registered worker cluster, owns
+# the OCM addon that renders each worker's manifests, and runs the admission
+# webhooks. Its load scales with the number of worker clusters, slices and
+# projects -- not with slice data traffic, none of which passes through it.
+#
+# It ships with a 128Mi limit and a 10m CPU request. That is fine for a two-cluster
+# demo and thin for a hub fronting a real fleet: the reconcile burst when several
+# clusters register or a slice is re-templated is what pushes it, and a webhook
+# that gets OOMKilled fails CRD admission for every cluster at once.
+kubeslice:
+  controller:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+      limits:
+        cpu: "2"
+        memory: 1Gi
+  rbacproxy:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi

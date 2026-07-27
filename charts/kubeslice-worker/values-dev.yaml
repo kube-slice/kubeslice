@@ -1,0 +1,110 @@
+# kubeslice-worker -- development resource profile
+#
+#   helm install kubeslice-worker kubeslice/kubeslice-worker \
+#     -f values.yaml -f values-dev.yaml
+#
+# Target: laptop clusters (kind/k3s/minikube) and CI. A handful of slice-onboarded
+# pods, one slice, no sustained traffic. The goal is to fit the whole mesh onto a
+# small node without the scheduler refusing to place it.
+#
+# Requests are deliberately small so the mesh schedules on a 2-4 core node
+# alongside the workloads under test. Limits are kept comfortably above measured
+# steady state (see values-prod.yaml for the measurements) so a developer does
+# not spend an afternoon debugging an OOMKill that is really just a tight limit.
+#
+# NOT FOR PRODUCTION. These requests are too small to protect the mesh from
+# eviction under node pressure -- on a busy node the kubelet will reclaim these
+# containers before your application pods, which takes the overlay down.
+
+nsm:
+  forwardingPlane:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi
+
+  nsmgr:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi
+    excludePrefixesResources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 75m
+        memory: 64Mi
+
+  nscgrpc:
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+
+  registryK8sResources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 128Mi
+  admission-webhook:
+    # NSM admission webhook: injects the NSM client into slice-onboarded pods.
+    # It sits in the pod-admission path, so if it is starved, pod creation stalls.
+    webhookResources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 250m
+        memory: 128Mi
+
+
+
+netop:
+  netop:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 200m
+        memory: 128Mi
+
+operator:
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+dns:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+# kube-rbac-proxy sidecar on worker-operator (metrics auth proxy).
+rbacproxy:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi

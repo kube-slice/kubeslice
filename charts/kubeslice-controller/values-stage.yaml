@@ -1,0 +1,25 @@
+# kubeslice-controller -- staging resource profile
+#
+#   helm install kubeslice-controller kubeslice/kubeslice-controller \
+#     -f values.yaml -f values-stage.yaml
+#
+# Pre-production hub: a few registered clusters, occasional slice churn.
+# Half of prod's ceilings, with real requests so scheduling and eviction
+# behaviour still resembles production.
+kubeslice:
+  controller:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: "1"
+        memory: 512Mi
+  rbacproxy:
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 250m
+        memory: 128Mi

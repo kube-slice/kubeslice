@@ -36,6 +36,8 @@ spec:
         image: '{{ .Values.global.imageRegistry }}/{{ .Values.netop.image }}:{{ .Values.netop.tag }}'
         imagePullPolicy: {{ .Values.netop.pullPolicy }}
         name: avesha-sidecar
+        resources:
+          {{- toYaml .Values.netop.resources | nindent 10 }}
         securityContext:
           allowPrivilegeEscalation: true
           capabilities:

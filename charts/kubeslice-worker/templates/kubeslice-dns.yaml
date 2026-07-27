@@ -58,12 +58,7 @@ spec:
         image: {{ .Values.dns.image }}:{{ .Values.dns.tag }}
         imagePullPolicy: {{ .Values.dns.pullPolicy }}
         resources:
-          requests:
-            cpu: 10m
-            memory: 64Mi
-          limits:
-            cpu: 50m
-            memory: 128Mi
+          {{- toYaml .Values.dns.resources | nindent 10 }}
         ports:
         - containerPort: 1053
           protocol: UDP
